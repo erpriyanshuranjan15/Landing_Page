@@ -674,7 +674,7 @@
     <p class="sub">Stay informed with in-depth match statistics, player performance data, and expert commentary — all in one place, completely free.</p>
 
     <div class="hero-ctas">
-      <a class="btn-primary" href="https://t.me/+2E6DkhZPiYwyNGE9" target="_blank" rel="noopener noreferrer" onclick="trackTelegram(event)">
+      <a class="btn-primary tg-link" href="https://t.me/+2E6DkhZPiYwyNGE9" target="_blank" rel="noopener noreferrer">
         <svg class="tg-icon" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.04 9.613c-.15.675-.544.839-1.102.522l-3.05-2.247-1.47 1.415c-.163.163-.3.3-.614.3l.22-3.09 5.63-5.085c.245-.22-.053-.34-.38-.12l-6.96 4.385-2.996-.937c-.65-.204-.664-.65.136-.963l11.7-4.51c.543-.197 1.017.123.926.717z"/></svg>
         Join Our Community
       </a>
@@ -721,7 +721,7 @@
       👥 <strong>100,000+</strong> active community members
     </div>
 
-    <a class="join-btn" href="https://t.me/+2E6DkhZPiYwyNGE9" target="_blank" rel="noopener noreferrer" onclick="trackTelegram(event)">
+    <a class="join-btn tg-link" href="https://t.me/+2E6DkhZPiYwyNGE9" target="_blank" rel="noopener noreferrer">
       <svg class="tg-icon" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.04 9.613c-.15.675-.544.839-1.102.522l-3.05-2.247-1.47 1.415c-.163.163-.3.3-.614.3l.22-3.09 5.63-5.085c.245-.22-.053-.34-.38-.12l-6.96 4.385-2.996-.937c-.65-.204-.664-.65.136-.963l11.7-4.51c.543-.197 1.017.123.926.717z"/></svg>
       JOIN COMMUNITY — FREE
     </a>
@@ -873,7 +873,7 @@
       <h2>Be Part of the Cricket<br/>Conversation</h2>
       <p>Over 100,000 fans already share insights, discuss matches, and enjoy the game together. It's free and open to all cricket lovers.</p>
 
-      <a class="btn-primary" href="https://t.me/+2E6DkhZPiYwyNGE9" target="_blank" rel="noopener noreferrer" onclick="trackTelegram(event)" style="display:inline-flex;margin:0 auto;">
+      <a class="btn-primary tg-link" href="https://t.me/+2E6DkhZPiYwyNGE9" target="_blank" rel="noopener noreferrer" style="display:inline-flex;margin:0 auto;">
         <svg class="tg-icon" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.04 9.613c-.15.675-.544.839-1.102.522l-3.05-2.247-1.47 1.415c-.163.163-.3.3-.614.3l.22-3.09 5.63-5.085c.245-.22-.053-.34-.38-.12l-6.96 4.385-2.996-.937c-.65-.204-.664-.65.136-.963l11.7-4.51c.543-.197 1.017.123.926.717z"/></svg>
         Join Our Telegram Community
       </a>
@@ -908,24 +908,31 @@
        SCRIPTS
   ══════════════════════════════ -->
   <script>
-    function trackTelegram(e) {
-      e.preventDefault();
-      fbq('track', 'Lead');
-      setTimeout(function() {
-        window.open("https://t.me/+2E6DkhZPiYwyNGE9", "_blank");
-      }, 300);
-    }
+    // ── Meta Pixel Lead tracking ──
+    // Attach a single click listener to all Telegram links.
+    // Uses a flag to ensure the Lead event fires only once per click,
+    // then lets the native target="_blank" handle the redirect naturally
+    // (no setTimeout / preventDefault needed).
+    document.querySelectorAll('a.tg-link').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'Lead');
+        }
+      });
+    });
 
-    // Scroll-triggered fade-ins
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+    // ── Scroll-triggered fade-ins ──
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
         }
       });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    document.querySelectorAll('.fade-in').forEach(function(el) {
+      observer.observe(el);
+    });
   </script>
 </body>
 </html>
